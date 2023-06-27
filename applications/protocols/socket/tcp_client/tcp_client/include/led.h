@@ -28,7 +28,12 @@ void ledStatusContarl(void* pvParameters);
 
 void led_gpio_init(void);
 
+void ledloop(void);
 
+void ledloopcreate(void* para);
+
+void gpioledh(void);
+void gpioledl(void);
 
 
 #endif /*__LED_H__*/

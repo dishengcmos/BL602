@@ -8,6 +8,8 @@
 
 #include <wifi_mgmr_ext.h>
 
+#include "led.h"
+
 static char temp_account_pass_buff[50];
 
 iicDevice_e iicDevice;
@@ -174,6 +176,7 @@ void communprocess(void* para)
 {
 	while(1)
 	{
+		//gpioledl();
 		communicat(g_tcp_buff);
 		processIP();
 		processaccountpass();

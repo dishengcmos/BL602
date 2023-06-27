@@ -7,7 +7,7 @@
 #include <blog.h>
 #include "vi5300string.h"
 #include "led.h"
-
+#include "usart_communication.h"
 
 static float t_tof;
 uint8_t gSalve;
@@ -548,7 +548,7 @@ uint8_t VI5300_Get_Measure_Data(float *dist)
         return 0;
     }
     VI5300_GetRawRangingData(&distance);
- 	if(distance.confidence>0)
+ 	if(distance.confidence>60)
 		*dist = distance.millimeter * 0.1f;	    // dist单位为cm
  	else
  		return 0;
@@ -560,28 +560,26 @@ uint8_t VI5300_Get_Measure_Data(float *dist)
 
 void i2c_tof()//void *param
 {
-	//vi5300Init();
-	//puts("start measure\r\n");
 	if(VI5300_Get_Measure_Data(&t_tof)==1)
 	{
 		if((t_tof>20.0f)&&(ledstate.ledcolour!=green))
 		{
-			printf("tof if \r\n");
 			ledstate.ledcolour=green;
 			ledstate.ledchange=1;
-			printf("colour= %d \r\n",ledstate.ledcolour);
-			printf("change= %d \r\n",ledstate.ledchange);
 		}
-		else if((t_tof<20.0f)&&(ledstate.ledcolour!=blue))
+		else if((t_tof<20.0f)&&(ledstate.ledcolour!=red))
 		{
-			printf("tof else if\r\n");
 			ledstate.ledcolour=red;
 			ledstate.ledchange=1;
-			printf("colour= %d \r\n",ledstate.ledcolour);
-			printf("change= %d \r\n",ledstate.ledchange);
 		}
+		if(t_tof>255)
+			t_tof=255;
+		uint8_t toftoHex=t_tof;
+		//usart_log_communicat_send(&toftoHex, 1);
+
+		//usart_echo_communicat_send(&toftoHex, 1);
 	}
-	ledContarl();
+	//ledContarl();
 }
 
 float getTofdata(void)

@@ -12,6 +12,9 @@
 #include <blog.h>
 #include "vi5300.h"
 #include "communication.h"
+
+#include "led.h"
+
 //client
 //#define ROUTER_SSID "orange"
 //#define ROUTER_PWD "12345678"
@@ -84,7 +87,7 @@ static void tcp_client_task(void* arg)
 		{
 			memcpy(g_tcp_buff,tcp_buff,50);
 			//blog_info("%s:tcp receive data:%d \r\n", __func__, tcp_buff);
-			//printf("%s",tcp_buff);
+			printf("%s",tcp_buff);
 			//communication(tcp_buff);
 			if (strstr(tcp_buff, "close"))
 			{
@@ -250,9 +253,12 @@ void processIP(void)
 
 void networkproc(void* para)
 {
-    aos_register_event_filter(EV_WIFI, network_event, NULL);//记录打印 wifi 模块实时所处的状态
-    hal_wifi_start_firmware_task();
-    aos_post_event(EV_WIFI, CODE_WIFI_ON_INIT_DONE, 0);
+	//gpioledl();
+
+	aos_register_event_filter(EV_WIFI, network_event, NULL);//记录打印 wifi 模块实时所处的状态
+	hal_wifi_start_firmware_task();
+	aos_post_event(EV_WIFI, CODE_WIFI_ON_INIT_DONE, 0);
+
     vTaskDelete(NULL);
 }
 
