@@ -12,7 +12,7 @@
 
 static char temp_account_pass_buff[50];
 
-iicDevice_e iicDevice;
+iicDevice_e iicDevice=VI5300;
 
 receiveFlag_s receiveFlag;
 

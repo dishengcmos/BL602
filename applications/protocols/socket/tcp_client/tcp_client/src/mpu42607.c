@@ -233,14 +233,14 @@ static uint8_t processGyroBias(int16_t gx, int16_t gy, int16_t gz, axis_t *gyroB
 */
 void sensorUpdate(void)
 {
-	static uint8_t step=0;
-	// 传感器校准状态刷新
- 	// sensorBiasCalibrated();
-	// 获取陀螺仪基本数据
-	int16_t t_acc[3], t_gyro[3];
-
-	getIcm42607Data(t_acc, t_gyro);
-
+	static uint8_t step=0;				
+	// 传感器校准状态刷新						
+ 	// sensorBiasCalibrated();			
+	// 获取陀螺仪基本数据						
+	int16_t t_acc[3], t_gyro[3];		
+										
+	getIcm42607Data(t_acc, t_gyro);		
+	
 	// 校准陀螺仪和加速度
 	axis_t acc;
 	acc.x = t_acc[X] - accBias.x; //acc的平均值
@@ -260,18 +260,14 @@ void sensorUpdate(void)
 
 //	printf("accZ4=%f\r\n",accShake.z);
 
-	/****
-	if(accShake.z>200)
+
+	if(accShake.z>120)
 	{
 		gshake_42607=~gshake_42607;
 	}
-	if (gyroBiasRunning.isBiasValueFound == 0)
-	{
-		processGyroBias(t_gyro[X], t_gyro[Y], t_gyro[Z], &gyroBias);
-	}
-	****/
 
-	/**/
+
+	/***
 	switch(step)
 	{
 		static uint16_t delaynum=0;
@@ -327,7 +323,7 @@ void sensorUpdate(void)
 	memcpy(usart_senddata, sendData, 23);
 
 	usart_echo_communicat_send(usart_senddata, 23);
-	/**/
+	***/
 }
 
 void i2c_42607mpu() 

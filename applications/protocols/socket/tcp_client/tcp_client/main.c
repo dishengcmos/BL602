@@ -120,11 +120,9 @@ void iicTaskjudg(iicDevice_e iicdevice)
 void iicTask(void* para)//
 {
 
-
-
 	while(1)
-	{	//gpioledh();
-		iicDevice=MPU42607;
+	{	 
+		//iicDevice=MPU42607;
 		iicTaskjudg(iicDevice);
 	}
 	vTaskDelete(NULL);
@@ -143,7 +141,7 @@ void sensorInit()
 	led_gpio_init();
  	tcpip_init(NULL, NULL);
  	bl602_i2c_init();
-	iicDevice=MPU42607;
+
 	if(iicDevice==VI5300)
 	{
 		vi5300Init();
@@ -159,16 +157,15 @@ void sensorInit()
 
 void main()
 {
-	//vTaskDelay(500);
 	vTaskDelay(2000);
  	sensorInit();
-
+	
   	xTaskCreate(iicTask, (char*)"iiicdrivetask", 1024, NULL, 15, NULL);
-// 	xTaskCreate(networkproc, (char*)"main_entry", 1024, NULL, 15, NULL);
-//	xTaskCreate(communprocess, (char*)"communcationprocess", 1024, NULL, 15, NULL);
-  	xTaskCreate(usartprogress, (char*)"usarttrans", 1024, NULL, 15, NULL);
+  	xTaskCreate(networkproc, (char*)"main_entry", 1024, NULL, 15, NULL);
+ 	xTaskCreate(communprocess, (char*)"communcationprocess", 1024, NULL, 15, NULL);
+  	//xTaskCreate(usartprogress, (char*)"usarttrans", 1024, NULL, 15, NULL);
 
-// 	xTaskCreate(TaskUart,(char*)"TaskUart", 1024, NULL, 15, NULL);
-//	xTaskCreate(ledloopcreate, (char*)"ledloop", 1024, NULL, 15, NULL);
+  	xTaskCreate(TaskUart,(char*)"TaskUart", 1024, NULL, 15, NULL);
+ 	xTaskCreate(ledloopcreate, (char*)"ledloop", 1024, NULL, 15, NULL);
 }
 
